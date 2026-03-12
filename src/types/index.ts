@@ -19,3 +19,7 @@ export type OrderStatus =
   | typeof ORDER_STATUS.OPEN
   | typeof ORDER_STATUS.PAID
   | typeof ORDER_STATUS.CANCELLED;
+
+// Utility types
+export type MenuItemInput = Omit<MenuItem, "id">;
+export type MenuItemUpdate = Partial<MenuItemInput> & Pick<MenuItem, "id">;

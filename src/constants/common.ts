@@ -3,3 +3,5 @@ export const ORDER_STATUS = {
   PAID: "paid",
   CANCELLED: "cancelled",
 };
+
+export const COLLECTION_NAME = "menu";
