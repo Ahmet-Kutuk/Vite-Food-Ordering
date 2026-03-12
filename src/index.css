@@ -117,3 +117,30 @@ body,
 .minw-16 {
   min-width: 16px !important;
 }
+
+.topbar {
+  background: #111827;
+}
+.tb-btn {
+  background: #1f2937 !important;
+  border: none !important;
+  color: #d1d5db !important;
+  transition: all 0.15s;
+}
+.tb-btn:hover {
+  background: #374151 !important;
+  color: white !important;
+}
+.tb-btn.active {
+  background: var(--orange) !important;
+  color: white !important;
+}
+.user-avatar {
+  width: 26px;
+  height: 26px;
+  background: var(--orange);
+  font-size: 10px;
+}
+.user-chip {
+  background: #1f2937;
+}
