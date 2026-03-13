@@ -9,7 +9,12 @@ import {
 } from "../services/menuService";
 import { INITIAL_MENU } from "../constants/initialMenu";
 
-export function useMenu() {
+interface UseMenuOptions {
+  onSuccess?: (message: string) => void;
+  onError?: (message: string) => void;
+}
+
+export function useMenu({ onSuccess, onError }: UseMenuOptions = {}) {
   const [state, setState] = useState<MenuState>({
     items: [],
     loading: true,
@@ -26,13 +31,13 @@ export function useMenu() {
         } else {
           setState({ items, loading: false, error: null });
         }
-      } catch (err) {
-        console.error("Menü yüklenemedi:", err);
+      } catch {
         setState({
           items: INITIAL_MENU,
           loading: false,
-          error: "Menü yüklenemedi, yerel veriler kullanılıyor.",
+          error: "Menü yüklenemedi.",
         });
+        onError?.("Menü yüklenemedi, yerel veriler kullanılıyor.");
       }
     };
     load();
@@ -42,9 +47,9 @@ export function useMenu() {
     try {
       const newItem = await addMenuItem(item);
       setState((prev) => ({ ...prev, items: [...prev.items, newItem] }));
-    } catch (err) {
-      console.error("Ürün eklenemedi:", err);
-      setState((prev) => ({ ...prev, error: "Ürün eklenemedi." }));
+      onSuccess?.(`${newItem.name} menüye eklendi`);
+    } catch {
+      onError?.("Ürün eklenemedi.");
     }
   };
 
@@ -55,22 +60,23 @@ export function useMenu() {
         ...prev,
         items: prev.items.map((m) => (m.id === item.id ? item : m)),
       }));
-    } catch (err) {
-      console.error("Ürün güncellenemedi:", err);
-      setState((prev) => ({ ...prev, error: "Ürün güncellenemedi." }));
+      onSuccess?.(`${item.name} güncellendi`);
+    } catch {
+      onError?.("Ürün güncellenemedi.");
     }
   };
 
   const removeItem = async (id: string) => {
+    const item = state.items.find((m) => m.id === id);
     try {
       await deleteMenuItem(id);
       setState((prev) => ({
         ...prev,
         items: prev.items.filter((m) => m.id !== id),
       }));
-    } catch (err) {
-      console.error("Ürün silinemedi:", err);
-      setState((prev) => ({ ...prev, error: "Ürün silinemedi." }));
+      onSuccess?.(`${item?.name ?? "Ürün"} silindi`);
+    } catch {
+      onError?.("Ürün silinemedi.");
     }
   };
 

@@ -8,9 +8,15 @@ import OrderPanel from "./components/OrderPanel";
 import PaymentModal from "./components/PaymentModal";
 import AddProductModal from "./components/AddProductModal";
 import { CATEGORY_ALL } from "./constants/common";
+import { useToast } from "./hooks/useToast";
+import Toast from "./components/Toast";
 
 export default function App() {
-  const { items, loading, error, addItem, editItem, removeItem } = useMenu();
+  const { toasts, showToast, removeToast } = useToast();
+  const { items, loading, error, addItem, editItem, removeItem } = useMenu({
+    onSuccess: (msg) => showToast(msg, "success"),
+    onError: (msg) => showToast(msg, "error"),
+  });
   const {
     orderItems,
     total,
@@ -27,6 +33,7 @@ export default function App() {
   const handlePaymentConfirm = () => {
     clearItems();
     setIsPaymentOpen(false);
+    showToast("Ödeme başarıyla alındı", "success");
   };
 
   const handleAddMenuItem = async (item: MenuItem) => {
@@ -101,6 +108,8 @@ export default function App() {
         onEdit={handleEditMenuItem}
         editItem={editMenuItem}
       />
+
+      <Toast toasts={toasts} onRemove={removeToast} />
     </div>
   );
 }
