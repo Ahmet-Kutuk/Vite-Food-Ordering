@@ -1,4 +1,4 @@
-import { ORDER_STATUS } from "./../constants/common";
+import { ORDER_STATUS, PAYMENT_METHODS } from "./../constants/common";
 
 // Base types
 export interface MenuItem {
@@ -45,3 +45,23 @@ export interface OrderPanelProps {
   onClear: () => void;
   onPaymentOpen: () => void;
 }
+
+export interface PaymentModalProps {
+  isOpen: boolean;
+  total: number;
+  onConfirm: () => void;
+  onClose: () => void;
+}
+
+export interface AddProductModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onAdd: (item: MenuItem) => void;
+  onEdit: (item: MenuItem) => void;
+  editItem?: MenuItem | null;
+}
+
+export type PaymentMethod =
+  | typeof PAYMENT_METHODS.CASH
+  | typeof PAYMENT_METHODS.CARD
+  | typeof PAYMENT_METHODS.QR;

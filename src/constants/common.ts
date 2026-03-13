@@ -53,3 +53,9 @@ export const SERVICE_MODES = {
   DINE_IN: "dine-in",
   TAKEAWAY: "takeaway",
 };
+
+export const PAYMENT_METHODS = {
+  CASH: "cash",
+  CARD: "card",
+  QR: "qr",
+};
