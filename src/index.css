@@ -290,7 +290,7 @@ body,
 }
 
 .btn-back {
-  background: var(--orange);
+  background: var(--orange) !important;
   border: none;
 }
 

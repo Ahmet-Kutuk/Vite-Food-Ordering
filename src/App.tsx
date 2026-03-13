@@ -1,121 +1,106 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import type { MenuItem } from "./types";
+import { useMenu } from "./hooks/useMenu";
+import { useOrder } from "./hooks/useOrder";
+import Topbar from "./components/TopBar";
+import MenuPanel from "./components/MenuPanel";
+import OrderPanel from "./components/OrderPanel";
+import PaymentModal from "./components/PaymentModal";
+import AddProductModal from "./components/AddProductModal";
+import { CATEGORY_ALL } from "./constants/common";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const { items, loading, error, addItem, editItem, removeItem } = useMenu();
+  const {
+    orderItems,
+    total,
+    addItem: addToOrder,
+    removeItem: removeFromOrder,
+    clearItems,
+  } = useOrder();
+
+  const [activeCategory, setActiveCategory] = useState(CATEGORY_ALL);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const [editMenuItem, setEditMenuItem] = useState<MenuItem | null>(null);
+
+  const handlePaymentConfirm = () => {
+    clearItems();
+    setIsPaymentOpen(false);
+  };
+
+  const handleAddMenuItem = async (item: MenuItem) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id: _id, ...rest } = item;
+    await addItem(rest);
+  };
+
+  const handleEditMenuItem = async (item: MenuItem) => {
+    await editItem(item);
+  };
+
+  if (loading) {
+    return (
+      <div className="d-flex align-items-center justify-content-center vh-100">
+        <div className="text-center">
+          <div className="spinner-border mb-3 text-orange" />
+          <div className="text-muted small">Menü yükleniyor...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="d-flex flex-column vh-100 overflow-hidden">
+      <Topbar />
+      {error && (
+        <div className="alert alert-warning alert-dismissible mb-0 py-2 px-3 rounded-0 small">
+          {error}
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      )}
+      <div className="app-container flex-grow-1 overflow-hidden">
+        <MenuPanel
+          items={items}
+          activeCategory={activeCategory}
+          onCategoryChange={setActiveCategory}
+          onAddItem={addToOrder}
+          onDeleteItem={removeItem}
+          onRemoveItem={removeFromOrder}
+          onEditItem={(item) => {
+            setEditMenuItem(item);
+            setIsAddProductOpen(true);
+          }}
+          onAddProduct={() => setIsAddProductOpen(true)}
+          orderItems={orderItems}
+        />
+        <OrderPanel
+          orderItems={orderItems}
+          total={total}
+          onAdd={addToOrder}
+          onRemove={removeFromOrder}
+          onClear={clearItems}
+          onPaymentOpen={() => setIsPaymentOpen(true)}
+        />
+      </div>
 
-      <div className="ticks"></div>
+      <PaymentModal
+        isOpen={isPaymentOpen}
+        total={total}
+        onConfirm={handlePaymentConfirm}
+        onClose={() => setIsPaymentOpen(false)}
+      />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <AddProductModal
+        key={editMenuItem?.id ?? "new"}
+        isOpen={isAddProductOpen}
+        onClose={() => {
+          setIsAddProductOpen(false);
+          setEditMenuItem(null);
+        }}
+        onAdd={handleAddMenuItem}
+        onEdit={handleEditMenuItem}
+        editItem={editMenuItem}
+      />
+    </div>
+  );
 }
-
-export default App
