@@ -36,3 +36,15 @@ export const ORDER_STATUS = {
 };
 
 export const COLLECTION_NAME = "menu";
+
+export const CATEGORIES = [
+  "Tümü",
+  "İçecekler",
+  "Salatalar",
+  "Izgara",
+  "Çorbalar",
+  "Tatlılar",
+  "Ana Yemekler",
+];
+
+export const CATEGORY_ALL = "Tümü";

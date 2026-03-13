@@ -23,3 +23,16 @@ export type OrderStatus =
 // Utility types
 export type MenuItemInput = Omit<MenuItem, "id">;
 export type MenuItemUpdate = Partial<MenuItemInput> & Pick<MenuItem, "id">;
+
+// Component props
+export interface MenuPanelProps {
+  items: MenuItem[];
+  activeCategory: string;
+  onCategoryChange: (category: string) => void;
+  onAddItem: (item: MenuItem) => void;
+  onDeleteItem: (id: string) => void;
+  onRemoveItem: (id: string) => void;
+  onEditItem: (item: MenuItem) => void;
+  onAddProduct: () => void;
+  orderItems: OrderItem[];
+}

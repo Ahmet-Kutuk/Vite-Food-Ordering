@@ -144,3 +144,77 @@ body,
 .user-chip {
   background: #1f2937;
 }
+
+.menu-panel {
+  background: white;
+  overflow: hidden;
+}
+.menu-grid {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  align-content: start;
+  background: #f9fafb;
+}
+.menu-grid::-webkit-scrollbar {
+  width: 4px;
+}
+.menu-grid::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+
+.menu-card {
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.menu-card:hover {
+  border-color: var(--orange) !important;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.12);
+  transform: translateY(-1px);
+}
+.menu-card.in-order {
+  border-color: var(--orange) !important;
+  background: var(--orange-light) !important;
+}
+.menu-card-actions {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.menu-card:hover .menu-card-actions {
+  opacity: 1;
+}
+.menu-card-price {
+  color: var(--orange);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.icon-action-btn {
+  width: 34px !important;
+  height: 34px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  border: 1px solid #e5e7eb !important;
+  background: white !important;
+  color: #6b7280 !important;
+  transition: all 0.15s;
+}
+.icon-action-btn:hover {
+  border-color: var(--orange) !important;
+  color: var(--orange) !important;
+  background: var(--orange-light) !important;
+}
+.icon-action-btn.danger:hover {
+  border-color: var(--red) !important;
+  color: var(--red) !important;
+  background: #fef2f2 !important;
+}
+.qty-btn:hover {
+  background: var(--orange) !important;
+  border-color: var(--orange) !important;
+  color: white !important;
+}
