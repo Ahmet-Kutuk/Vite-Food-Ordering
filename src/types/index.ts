@@ -36,3 +36,12 @@ export interface MenuPanelProps {
   onAddProduct: () => void;
   orderItems: OrderItem[];
 }
+
+export interface OrderPanelProps {
+  orderItems: OrderItem[];
+  total: number;
+  onAdd: (item: MenuItem) => void;
+  onRemove: (id: string) => void;
+  onClear: () => void;
+  onPaymentOpen: () => void;
+}

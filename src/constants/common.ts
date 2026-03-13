@@ -48,3 +48,8 @@ export const CATEGORIES = [
 ];
 
 export const CATEGORY_ALL = "Tümü";
+
+export const SERVICE_MODES = {
+  DINE_IN: "dine-in",
+  TAKEAWAY: "takeaway",
+};
