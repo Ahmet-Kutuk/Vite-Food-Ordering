@@ -65,3 +65,14 @@ export type PaymentMethod =
   | typeof PAYMENT_METHODS.CASH
   | typeof PAYMENT_METHODS.CARD
   | typeof PAYMENT_METHODS.QR;
+
+export interface MenuState {
+  items: MenuItem[];
+  loading: boolean;
+  error: string | null;
+}
+
+export interface OrderState {
+  items: OrderItem[];
+  total: number;
+}
